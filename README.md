@@ -1,2 +1,15 @@
-# ADS507_Team_5
-Group project for ADS507 Spring 2024
+<ins>**Background**</ins>
+
+
+<br/><br/>
+<ins>**Purpose**</ins>
+
+
+<br/><br/>
+<ins>**Results**</ins>
+
+
+
+
+<br/><br/>
+<ins>**Link to Kaggle**</ins>
