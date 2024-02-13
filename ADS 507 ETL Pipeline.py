@@ -41,48 +41,7 @@ def check_if_valid_data(df: pd.DataFrame) -> bool:
 # Extract the Data
 if __name__ == "__main__":
 
-    headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": "Bearer {token}".format(token=TOKEN)
-    }
-
-    # Adjust timestamps
-    today = datetime.datetime.now()
-    yesterday = today - datetime.timedelta(days=1)
-    yesterday_unix_timestamp = int(yesterday.timestamp()) * 1000
-
-    # Get the data the spotify API
-    r = requests.get("https://api.spotify.com/v1/me/player/recently-played?after={time}".format(
-        time=yesterday_unix_timestamp), headers=headers)
-
-    # Read the json data
-    data = r.json()
-
-    # Initialize lists
-    song_names = []
-    artist_names = []
-    played_at_list = []
-    timestamps = []
-
-    # Create structued rows for the database from the json data
-    for song in data["items"]:
-        song_names.append(song["track"]["name"])
-        artist_names.append(song["track"]["album"]["artists"][0]["name"])
-        played_at_list.append(song["played_at"])
-        timestamps.append(song["played_at"][0:10])
-
-    # Map the row item to the right list
-    song_dict = {
-        "song_name": song_names,
-        "artist_name": artist_names,
-        "played_at": played_at_list,
-        "timestamp": timestamps
-    }
-
-    # Create a dataframe to hold the spotify data
-    df = pd.DataFrame(song_dict, columns=[
-                           "song_name", "artist_name", "played_at", "timestamp"])
+    # Convert the csv data to a structured dataframe
 
     #TODO
     # Similaryly to the above code, we need to pull data from csv files
@@ -94,9 +53,9 @@ if __name__ == "__main__":
         print("Data valid, proceed to load stage")
 
     # Load the Data
-    # Use sqlalchemy to store data
-    engine = sqlalchemy.create_engine("sqlite:///my_played_tracks.sqlite")
-    conn = sqlite3.connect('my_played_tracks.sqlite')
+    # maybe use sqlalchemy to store data
+    engine = sqlalchemy.create_engine("sqlite:///<DATASET>.sqlite")
+    conn = sqlite3.connect('<FILENAME>.sqlite')
     cursor = conn.cursor()
 
     # Create a connection as we have done in the course so far
@@ -105,12 +64,12 @@ if __name__ == "__main__":
     # Create tables with DDL
     #TODO modify the below table for our database
     sql = """
-    CREATE TABLE IF NOT EXISTS my_played_tracks(
-        song_name VARCHAR(200),
-        artist_name VARCHAR(200),
-        played_at VARCHAR(200),
-        timestamp VARCHAR(200),
-        CONSTRAINT primary_key_constraint PRIMARY KEY (played_at)
+    CREATE TABLE IF NOT EXISTS <TABLE NAME>(
+        <COLUMN> VARCHAR(200),
+        <COLUMN> VARCHAR(200),
+        <COLUMN> VARCHAR(200),
+        <COLUMN> VARCHAR(200),
+        <COLUMN> primary_key_constraint PRIMARY KEY (played_at)
     )
     """
 
