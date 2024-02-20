@@ -56,13 +56,57 @@ if __name__ == "__main__":
     # Create tables with DDL
     #TODO FOR LOGAN modify the below table for our database
     sql = """
-    CREATE TABLE IF NOT EXISTS <TABLE NAME>(
-        <COLUMN> VARCHAR(200),
-        <COLUMN> VARCHAR(200),
-        <COLUMN> VARCHAR(200),
-        <COLUMN> VARCHAR(200),
-        <COLUMN> primary_key_constraint PRIMARY KEY (<COLUMN>)
-    )
+    CREATE TABLE IF NOT EXISTS <Collisions>(
+        `uniq_key` INT NULL DEFAULT NULL,
+        `date` DATE NULL DEFAULT NULL,
+        `time` TEXT NULL DEFAULT NULL,
+        `borough` VARCHAR(45) NULL DEFAULT NULL,
+        `zip_code` VARCHAR(5) NULL DEFAULT NULL,
+        `lat` TEXT NULL DEFAULT NULL,
+        `long` TEXT NULL DEFAULT NULL,
+        `location` VARCHAR(45) NULL DEFAULT NULL,
+        `on_street_name` VARCHAR(60) NULL DEFAULT NULL,
+        `cross_street_name` VARCHAR(60) NULL DEFAULT NULL,
+        `off_street_name` VARCHAR(60) NULL DEFAULT NULL,
+        `persons_injured` INT NULL DEFAULT NULL,
+        `persons_killed` INT NULL DEFAULT NULL,
+        `peds_injured` INT NULL DEFAULT NULL,
+        `peds_killed` INT NULL DEFAULT NULL,
+        `cyclists_injured` INT NULL DEFAULT NULL,
+        `cyclists_killed` INT NULL DEFAULT NULL,
+        `motorists_injured` INT NULL DEFAULT NULL,
+        `motorists_killed` INT NULL DEFAULT NULL,
+        `vehicle_1_type` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_2_type` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_3_type` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_4_type` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_5_type` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_1_factor` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_2_factor` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_3_factor` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_4_factor` VARCHAR(60) NULL DEFAULT NULL,
+        `vehicle_5_factor` VARCHAR(60) NULL DEFAULT NULL)
+
+    CREATE TABLE IF NOT EXISTS <Uber>(
+        `base_license_num` VARCHAR(6) NULL DEFAULT NULL,
+        `wave_num` INT NULL DEFAULT NULL,
+        `base_name` VARCHAR(45) NULL DEFAULT NULL,
+        `dba` VARCHAR(45) NULL DEFAULT NULL,
+        `years` INT NULL DEFAULT NULL,
+        `week_num` INT NULL DEFAULT NULL,
+        `pickup_start_date` DATE NULL DEFAULT NULL,
+        `pickup_end_date` DATE NULL DEFAULT NULL,
+        `total_dispatched_trips` INT NULL DEFAULT NULL,
+        `unq_dispatched_vehicle` INT NULL DEFAULT NULL)
+
+    CREATE TABLE IF NOT EXISTS <Weather>
+        `date` DATE NULL DEFAULT NULL,
+        `precip` DOUBLE NULL DEFAULT NULL,
+        `snow_fall` DOUBLE NULL DEFAULT NULL,
+        `snow_depth` DOUBLE NULL DEFAULT NULL,
+        `tmin` INT NULL DEFAULT NULL,
+        `tmax` INT NULL DEFAULT NULL,
+    UNIQUE INDEX `DATE_UNIQUE` (`date` ASC))
     """
 
     # Validate the Data (transform the data). Since this function needs to do reworked using MySQL, we should call this function after creating the MySQL tables
