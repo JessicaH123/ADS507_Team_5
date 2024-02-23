@@ -3,7 +3,7 @@ import pandas as pd
 from sqlalchemy.orm import sessionmaker
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, date
 import datetime
 import sqlite3
 import pymysql as mysql
@@ -48,6 +48,19 @@ if __name__ == "__main__":
     # Similaryly to the above code, we need to pull data from csv files
     # This will be much easier than pulling data from an API
     # pd.read_csv() -> parse for desired data/timeframe -> clean data (this is the transform step)
+    collision_dat = pd.read_csv('C:/Users/jessh/Documents/MS Applied Data Science/ADS507/Project/nyc_collsions/database.csv', parse_dates =['DATE'])
+    uber_dat = pd.read_csv('C:/Users/jessh/Documents/MS Applied Data Science/ADS507/Project/uber/Uber_Trips_NYC_2016.csv', parse_dates =['Pickup Start Date', 'Pickup End Date'])
+    weather_dat = pd.read_csv('C:/Users/jessh/Documents/MS Applied Data Science/ADS507/Project/nyc weather/NYC_Central_Park_weather_1869-2022.csv', parse_dates =['DATE'])
+
+    # changing the spaces in the names to underscores for use in sql statements
+    collision_dat.columns = collision_dat.columns.str.replace(' ', '_')
+    uber_dat.columns = uber_dat.columns.str.replace(' ', '_')
+    weather_dat.columns = weather_dat.columns.str.replace(' ', '_')
+
+    #filtering out only the 2016 year
+    collision_df= collision_dat[(collision_dat['DATE'].dt.year == 2016)].reset_index(drop = True)
+    uber_df = uber_dat[(uber_dat['Pickup_Start_Date'].dt.year == 2016) & (uber_dat['Pickup_Start_Date'].dt.year == 2016)].reset_index(drop = True)
+    weather_df= weather_dat[(weather_dat['DATE'].dt.year == 2016)].reset_index(drop = True)
 
     # TODO
     # Create a connection as we have done in the course so far
