@@ -5,7 +5,7 @@ This pipeline is created to identify how different weather conditions impact veh
 <br/><br/>
 <ins>**Purpose**</ins>
 
-Does bad weather affect UBER rides and vehicle accidents in NYC?
+How does bad weather affect UBER rides and vehicle accidents in NYC? How can Uber capitalize on this?
 - <b>Is there an increase in vehicle collisions during inclement weather? Does this also affect UBER rides?</b>
 - <b>What are the weather conditions for the most rides received in a single day?</b>
 - <b>Most rides during rainy season vs non-rainy season.</b>
