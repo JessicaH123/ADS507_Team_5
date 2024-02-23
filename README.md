@@ -1,6 +1,6 @@
 <ins>**Background**</ins>
 <br/>
-This pipeline is created to identify how different weather conditions impact vehicle collisions and uber rides in NYC during the 2016 calendar year
+This pipeline is created to identify how different weather conditions impact vehicle collisions and uber rides in NYC during the 2016 calendar year.
 
 <br/><br/>
 <ins>**Purpose**</ins>
@@ -14,7 +14,7 @@ How does bad weather affect UBER rides and vehicle accidents in NYC? How can Ube
 <br/><br/>
 <ins>**How to Deploy the Pipeline**</ins>
 <br/>
-<P>This pipeline is easily deployable since it involves running a single python script. Since I am most familiar with Jenkins automation for CI/CD, I will create steps for Jenkins. However, These steps can be modified based on your prefered CI/CD automation tool of choice
+<P>This pipeline is easily deployable since it involves running a single python script. Since I am most familiar with Jenkins automation for CI/CD, I will create steps for Jenkins. However, These steps can be modified based on your prefered CI/CD automation tool of choice.
 <br/>
 <ol>
 <li><p>Download the data pipeline python file (ADS 507 ETL Pipeline.py)
