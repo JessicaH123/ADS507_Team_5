@@ -30,79 +30,80 @@ if __name__ == "__main__":
     # Convert the csv data to a structured dataframe
 
     # Extract the raw data
-    collision_data = pd.read_csv(r'C:/Users/benog/OneDrive/Documents/ads507/nyc_collisions/nyc_collisions/database.csv')#, parse_dates=['DATE'])
-    uber_data = pd.read_csv(r'C:/Users/benog/OneDrive/Documents/ads507/Uber_Trips_NYC_2016.csv')#, parse_dates=['Pickup Start Date', 'Pickup End Date'])
-    weather_data = pd.read_csv(r'C:/Users/benog/OneDrive/Documents/ads507/NYC_Central_Park_weather_1869-2022.csv')#, parse_dates=['DATE'])
+    collision_data = pd.read_csv('C:/Users/jessh/Documents/MS Applied Data Science/ADS507/Project/nyc_collsions/database.csv', parse_dates =['DATE'])
+    uber_data = pd.read_csv('C:/Users/jessh/Documents/MS Applied Data Science/ADS507/Project/uber/Uber_Trips_NYC_2016.csv', parse_dates =['Pickup Start Date', 'Pickup End Date'])
+    weather_data = pd.read_csv('C:/Users/jessh/Documents/MS Applied Data Science/ADS507/Project/nyc weather/NYC_Central_Park_weather_1869-2022.csv', parse_dates =['DATE'])
 
     # Changing the spaces in the names to underscores for use in sql statements
     collision_data.columns = collision_data.columns.str.replace(' ', '_')
-    uber_data.columns = uber_data.columns.str.replace(' ', '_')
+    uber_data.columns = uber_dat.columns.str.replace(' ', '_')
     weather_data.columns = weather_data.columns.str.replace(' ', '_')
 
     # Filtering out only the 2016 year
-    #collision_df= collision_data[(collision_dat['DATE'].dt.year == 2016)].reset_index(drop = True)
-    #uber_df = uber_data[(uber_data['Pickup_Start_Date'].dt.year == 2016) & (uber_dat['Pickup_Start_Date'].dt.year == 2016)].reset_index(drop = True)
-    #weather_df= weather_data[(weather_data['DATE'].dt.year == 2016)].reset_index(drop = True)
+    collision_df= collision_data[(collision_data['DATE'].dt.year == 2016)].reset_index(drop = True)
+    uber_df = uber_data[(uber_data['Pickup_Start_Date'].dt.year == 2016) & (uber_dat['Pickup_Start_Date'].dt.year == 2016)].reset_index(drop = True)
+    weather_df= weather_data[(weather_data['DATE'].dt.year == 2016)].reset_index(drop = True)
 
     # Create a database connection
-    conn = mysql.connect(host=HOST_NAME,port=PORT,user=USERNAME,passwd=PASSWORD,db=DATABASE)
-    cursor = conn.cursor()
+    engine = sqlalchemy.create_engine(f"mysql+pymysql://{USERNAME}:{PASSWORD}@{HOST_NAME}:{PORT}/{DATABASE}")
+    conn = engine.connect()
 
-   # Create tables with DDL
+    # Create tables with DDL
     ddl1 = """
     CREATE TABLE IF NOT EXISTS `Daily_Weather` (
         `day_id` INT PRIMARY KEY AUTO_INCREMENT,
         `date` DATE NOT NULL,
-        `precip` DOUBLE NOT NULL,
-        `snow_fall` DOUBLE NOT NULL,
-        `snow_depth` DOUBLE NULL DEFAULT NULL,
+        `prcp` DOUBLE NOT NULL,
+        `snow` DOUBLE NOT NULL,
+        `snwd` DOUBLE NULL DEFAULT NULL,
         `tmin` INT NOT NULL,
         `tmax` INT NOT NULL
     );
     """
 
+
     ddl2 = """
     CREATE TABLE IF NOT EXISTS `Collisions` (
         `collision_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	`day_id` INT NOT NULL,
-	`uniq_key` INT NOT NULL,
-	`date` DATE NOT NULL,
-	`time` TEXT NOT NULL,
-	`borough` VARCHAR(45) NULL DEFAULT NULL,
-	`zip_code` VARCHAR(5) NULL DEFAULT NULL,
-	`lat` TEXT NULL DEFAULT NULL,
-	`long` TEXT NULL DEFAULT NULL,
-	`location` VARCHAR(45) NULL DEFAULT NULL,
-	`on_street_name` VARCHAR(60) NULL DEFAULT NULL,
-	`cross_street_name` VARCHAR(60) NULL DEFAULT NULL,
-	`off_street_name` VARCHAR(60) NULL DEFAULT NULL,
-	`persons_injured` INT NOT NULL,
-	`persons_killed` INT NOT NULL,
-	`peds_injured` INT NOT NULL,
-	`peds_killed` INT NOT NULL,
-	`cyclists_injured` INT NOT NULL,
-	`cyclists_killed` INT NOT NULL,
-	`motorists_injured` INT NOT NULL,
-	`motorists_killed` INT NOT NULL,
-	`vehicle_1_type` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_2_type` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_3_type` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_4_type` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_5_type` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_1_factor` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_2_factor` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_3_factor` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_4_factor` VARCHAR(60) NULL DEFAULT NULL,
-	`vehicle_5_factor` VARCHAR(60) NULL DEFAULT NULL,
-	FOREIGN KEY (`day_id`) REFERENCES `Daily_Weather`(`day_id`)
+        `day_id` INT NOT NULL,
+	    `unique_key` INT NOT NULL,
+	    `date` DATE NOT NULL,
+	    `time` TEXT NOT NULL,
+	    `borough` VARCHAR(45) NULL DEFAULT NULL,
+	    `zip_code` VARCHAR(5) NULL DEFAULT NULL,
+	    `latitude` TEXT NULL DEFAULT NULL,
+	    `longitude` TEXT NULL DEFAULT NULL,
+	    `location` VARCHAR(45) NULL DEFAULT NULL,
+	    `on_street_name` VARCHAR(60) NULL DEFAULT NULL,
+	    `cross_street_name` VARCHAR(60) NULL DEFAULT NULL,
+	    `off_street_name` VARCHAR(60) NULL DEFAULT NULL,
+	    `persons_injured` INT NOT NULL,
+	    `persons_killed` INT NOT NULL,
+	    `pedestrians_injured` INT NOT NULL,
+	    `pedestrians_killed` INT NOT NULL,
+	    `cyclists_injured` INT NOT NULL,
+	    `cyclists_killed` INT NOT NULL,
+	    `motorists_injured` INT NOT NULL,
+	    `motorists_killed` INT NOT NULL,
+	    `vehicle_1_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_2_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_3_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_4_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_5_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_1_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_2_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_3_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_4_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_5_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    FOREIGN KEY (`day_id`) REFERENCES `Daily_Weather`(`day_id`)
     );
     """
-    
+
     ddl3 = """
     CREATE TABLE IF NOT EXISTS `Uber` (
         `ride_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        `day_id` INT NOT NULL,
-        `collision_id` INT NOT NULL,
+        `start_day_id` INT NOT NULL,
+        `end_day_id` INT NOT NULL,
         `base_license_num` VARCHAR(7) NOT NULL,
         `wave_num` INT NOT NULL,
         `base_name` VARCHAR(45) NOT NULL,
@@ -113,54 +114,36 @@ if __name__ == "__main__":
         `pickup_end_date` DATE NOT NULL,
         `total_dispatched_trips` INT NOT NULL,
         `unq_dispatched_vehicle` INT NOT NULL,
-        FOREIGN KEY (`day_id`) REFERENCES `Daily_Weather`(`day_id`)
+        FOREIGN KEY (`start_day_id`) REFERENCES `Daily_Weather`(`day_id`)
+        FOREIGN KEY (`end_day_id`) REFERENCES `Daily_Weather`(`day_id`)
     );
     """
-    
     # Validate the data sets
-    if check_if_empty(weather_data, "date"):
+    if check_if_empty(weather_df, "date"):
         print("Weather data valid, checking Collision data")
-    if check_if_empty(collision_data, "uniq_key"):
+    if check_if_empty(collision_df, "uniq_key"):
         print("Collision data valid, checking Uber data")
-    if check_if_empty(uber_data, "collision_id"):
-        print("Uber data valid, proceed to creating the database")
+   # if check_if_empty(uber_dat, "collision_id"):
+        #print("Uber data valid, proceed to creating the database")
 
     # Execute the sql query and create the table above
-    cursor.execute(ddl1)
-    cursor.execute(ddl2)
-    cursor.execute(ddl3)
+    conn.execute(text(ddl1))
+    conn.execute(text(ddl2))
+    #engine.execute(ddl3)
     print("Successfully created the database")
 
+    # populating the weather table
+    weather_df.to_sql(name = "daily_weather",con = engine, if_exists= "append", index=False)
 
-    try:    
-        # Load the dataframes into the database    
-        weather_data.to_sql("Daily_Weather", conn, if_exists="append", index=False)
-        collision_data.to_sql("Collisions", conn, if_exists="append", index=False)
-        uber_data.to_sql("Uber", conn, if_exists="append", index=False)
-        
-        # Filtering out only the 2016 year
-        transform_collision = """
-        SELECT *
-        FROM Collisions
-        WHERE YEAR(`DATE`) = 2016;
-        """
+    # had to add this part in because at the time of table creation, this table doesnt know the day_id of the weather table
+    weather_df['day_id'] = list(map(lambda x: x, range(1,367)))
+    merged_dfs= pd.merge(weather_df, collision_df, on= ['DATE'], how = 'inner')
+    collision_df.insert(0, "day_id", merged_dfs['day_id'], True)
 
-        transform_uber = """
-        SELECT *
-        FROM Uber
-        WHERE YEAR(`Pickup_Start_Date`) = 2016;
-        """
+    # populating the collisions table
+    collision_df.to_sql(name = "collisions", con = engine, if_exists="append", index=False)
 
-        transform_weather = """
-        SELECT *
-        FROM Daily_Weather
-        WHERE YEAR(`DATE`) = 2016;
-        """
-        print("Data was tranformed to show columns from 2016")
-        
-    except:
-        print("Data already exists in the database")
-
+   
     # Close the database connection
     conn.close()
     print("Connection closed")
