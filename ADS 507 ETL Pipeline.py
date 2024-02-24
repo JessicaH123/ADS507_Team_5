@@ -60,7 +60,7 @@ if __name__ == "__main__":
         `tmax` INT NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS `Collisions`(
+    CREATE TABLE IF NOT EXISTS `Collisions` (
         `collision_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `day_id` INT NOT NULL,
         `uniq_key` INT NOT NULL,
