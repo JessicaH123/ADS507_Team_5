@@ -48,8 +48,8 @@ if __name__ == "__main__":
     conn = mysql.connect(host=HOST_NAME,port=PORT,user=USERNAME,passwd=PASSWORD,db=DATABASE)
     cursor = conn.cursor()
 
-    # Create tables with DDL
-    ddl = """
+   # Create tables with DDL
+    ddl1 = """
     CREATE TABLE IF NOT EXISTS `Daily_Weather` (
         `day_id` INT PRIMARY KEY AUTO_INCREMENT,
         `date` DATE NOT NULL,
@@ -59,42 +59,46 @@ if __name__ == "__main__":
         `tmin` INT NOT NULL,
         `tmax` INT NOT NULL
     );
+    """
 
+    ddl2 = """
     CREATE TABLE IF NOT EXISTS `Collisions` (
         `collision_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        `day_id` INT NOT NULL,
-        `uniq_key` INT NOT NULL,
-        `date` DATE NOT NULL,
-        `time` TEXT NOT NULL,
-        `borough` VARCHAR(45) NULL DEFAULT NULL,
-        `zip_code` VARCHAR(5) NULL DEFAULT NULL,
-        `lat` TEXT NULL DEFAULT NULL,
-        `long` TEXT NULL DEFAULT NULL,
-        `location` VARCHAR(45) NULL DEFAULT NULL,
-        `on_street_name` VARCHAR(60) NULL DEFAULT NULL,
-        `cross_street_name` VARCHAR(60) NULL DEFAULT NULL,
-        `off_street_name` VARCHAR(60) NULL DEFAULT NULL,
-        `persons_injured` INT NOT NULL,
-        `persons_killed` INT NOT NULL,
-        `peds_injured` INT NOT NULL,
-        `peds_killed` INT NOT NULL,
-        `cyclists_injured` INT NOT NULL,
-        `cyclists_killed` INT NOT NULL,
-        `motorists_injured` INT NOT NULL,
-        `motorists_killed` INT NOT NULL,
-        `vehicle_1_type` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_2_type` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_3_type` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_4_type` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_5_type` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_1_factor` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_2_factor` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_3_factor` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_4_factor` VARCHAR(60) NULL DEFAULT NULL,
-        `vehicle_5_factor` VARCHAR(60) NULL DEFAULT NULL,
-        FOREIGN KEY (`day_id`) REFERENCES `Daily_Weather`(`day_id`)
+	    `day_id` INT NOT NULL,
+	    `uniq_key` INT NOT NULL,
+	    `date` DATE NOT NULL,
+	    `time` TEXT NOT NULL,
+	    `borough` VARCHAR(45) NULL DEFAULT NULL,
+	    `zip_code` VARCHAR(5) NULL DEFAULT NULL,
+	    `lat` TEXT NULL DEFAULT NULL,
+	    `long` TEXT NULL DEFAULT NULL,
+	    `location` VARCHAR(45) NULL DEFAULT NULL,
+	    `on_street_name` VARCHAR(60) NULL DEFAULT NULL,
+	    `cross_street_name` VARCHAR(60) NULL DEFAULT NULL,
+	    `off_street_name` VARCHAR(60) NULL DEFAULT NULL,
+	    `persons_injured` INT NOT NULL,
+	    `persons_killed` INT NOT NULL,
+	    `peds_injured` INT NOT NULL,
+	    `peds_killed` INT NOT NULL,
+	    `cyclists_injured` INT NOT NULL,
+	    `cyclists_killed` INT NOT NULL,
+	    `motorists_injured` INT NOT NULL,
+	    `motorists_killed` INT NOT NULL,
+	    `vehicle_1_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_2_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_3_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_4_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_5_type` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_1_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_2_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_3_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_4_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    `vehicle_5_factor` VARCHAR(60) NULL DEFAULT NULL,
+	    FOREIGN KEY (`day_id`) REFERENCES `Daily_Weather`(`day_id`)
     );
-
+    """
+    
+    ddl3 = """
     CREATE TABLE IF NOT EXISTS `Uber` (
         `ride_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         `day_id` INT NOT NULL,
@@ -112,7 +116,7 @@ if __name__ == "__main__":
         FOREIGN KEY (`day_id`) REFERENCES `Daily_Weather`(`day_id`)
     );
     """
-
+    
     # Validate the data sets
     if check_if_empty(weather_data, "date"):
         print("Weather data valid, checking Collision data")
@@ -122,7 +126,9 @@ if __name__ == "__main__":
         print("Uber data valid, proceed to creating the database")
 
     # Execute the sql query and create the table above
-    cursor.execute(ddl)
+    cursor.execute(ddl1)
+    cursor.execute(ddl2)
+    cursor.execute(ddl3)
     print("Successfully created the database")
 
 
