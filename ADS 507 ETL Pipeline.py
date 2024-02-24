@@ -129,21 +129,32 @@ if __name__ == "__main__":
     # Execute the sql query and create the table above
     conn.execute(text(ddl1))
     conn.execute(text(ddl2))
-    #engine.execute(ddl3)
+    conn.execute(ddl3)
     print("Successfully created the database")
 
     # populating the weather table
     weather_df.to_sql(name = "daily_weather",con = engine, if_exists= "append", index=False)
 
-    # had to add this part in because at the time of table creation, this table doesnt know the day_id of the weather table
-    weather_df['day_id'] = list(map(lambda x: x, range(1,367)))
-    merged_dfs= pd.merge(weather_df, collision_df, on= ['DATE'], how = 'inner')
-    collision_df.insert(0, "day_id", merged_dfs['day_id'], True)
+   # had to add this part in because at the time of table creation, this table doesnt know the day_id of the weather table
+   weather_df['day_id'] = list(map(lambda x: x, range(1,367)))
+   collision_df= pd.merge(weather_df, collision_df, on= ['DATE'], how = 'right')
+   dayid_col = collision_df.pop('day_id')
+   collision_df.insert(0,'day_id',dayid_col)
 
     # populating the collisions table
     collision_df.to_sql(name = "collisions", con = engine, if_exists="append", index=False)
 
-   
+    # had to add this part in because at the time of table creation, this table doesnt know the day_id of the weather table
+    # first getting the day_id for the pickup start date 
+    temp_df = uber_df.rename(mapper = {"Pickup_Start_Date":"DATE"}, axis = 1)
+    temp_df = pd.merge(weather_df, temp_df, on = ['DATE'], how = 'right')
+    uber_df.insert(0, 'start_day_id', temp_df['day_id'])
+
+    # now getting the day_id for the pickup end date 
+    temp_df2 = uber_df.rename(mapper = {"Pickup_End_Date":"DATE"}, axis = 1)
+    temp_df2 = pd.merge(weather_df, temp_df2, on = ['DATE'], how = 'right')
+    uber_df.insert(1, 'end_day_id', temp_df2['day_id'])
+
     # Close the database connection
     conn.close()
     print("Connection closed")
