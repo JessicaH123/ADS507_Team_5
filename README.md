@@ -36,7 +36,9 @@ How does bad weather affect UBER rides and vehicle accidents in NYC? How can Ube
 
 <br/><br/>
 <ins>**Link to Kaggle**</ins>
-
+<br/><br/>
 https://www.kaggle.com/datasets/danbraswell/new-york-city-weather-18692022
+<br/><br/>
 https://www.kaggle.com/datasets/nypd/vehicle-collisions
+<br/><br/>
 https://www.kaggle.com/datasets/danvargg/uber-nyc-2016
