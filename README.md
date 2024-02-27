@@ -1,6 +1,6 @@
 <ins>**Background**</ins>
 <br/>
-This pipeline is created to identify how different weather conditions impact vehicle collisions and uber rides in NYC during the 2016 calendar year.
+This pipeline is created to identify how different weather conditions impact vehicle collisions and uber rides in NYC during the 2016 calendar year. Three datasets were used from the open source Kaggle.com website (linked at the end of this document). The pipeline is built in VSCode using Python and SQL languages. In this project, the pipeline will be used to populate a AZURE SQL database. It has also been used to populate a local instance of a MySQL Workbench database.
 
 <br/><br/>
 <ins>**Purpose**</ins>
